@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生成 3Things 图标</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);
+      margin: 0;
+      padding: 20px;
+    }
+
+    .icon-container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .icon-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-label {
+      font-size: 14px;
+      color: #6b5d54;
+      font-weight: 500;
+    }
+
+    canvas {
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(197, 184, 168, 0.3);
+    }
+
+    .instructions {
+      max-width: 600px;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(197, 184, 168, 0.15);
+    }
+
+    h1 {
+      color: #6b5d54;
+      margin-bottom: 20px;
+    }
+
+    ol {
+      color: #6b5d54;
+      line-height: 1.8;
+    }
+
+    code {
+      background: #f5f2ed;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Monaco', 'Courier New', monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="icon-container">
+    <div class="icon-wrapper">
+      <canvas id="icon16" width="16" height="16"></canvas>
+      <span class="icon-label">16x16</span>
+    </div>
+    <div class="icon-wrapper">
+      <canvas id="icon48" width="48" height="48"></canvas>
+      <span class="icon-label">48x48</span>
+    </div>
+    <div class="icon-wrapper">
+      <canvas id="icon128" width="128" height="128"></canvas>
+      <span class="icon-label">128x128</span>
+    </div>
+  </div>
+
+  <div class="instructions">
+    <h1>🎨 如何保存图标</h1>
+    <ol>
+      <li>右键点击上方的任意图标</li>
+      <li>选择"图片另存为..."</li>
+      <li>保存为对应的文件名:
+        <ul>
+          <li><code>icon16.png</code> - 16x16 图标</li>
+          <li><code>icon48.png</code> - 48x48 图标</li>
+          <li><code>icon128.png</code> - 128x128 图标</li>
+        </ul>
+      </li>
+      <li>将保存的图标文件放到 <code>extension/public/icons/</code> 目录下</li>
+    </ol>
+  </div>
+
+  <script>
+    // 绘制图标函数
+    function drawIcon(canvas) {
+      const ctx = canvas.getContext('2d');
+      const size = canvas.width;
+
+      // 创建渐变背景
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#c9b8a8');
+      gradient.addColorStop(0.5, '#b5a092');
+      gradient.addColorStop(1, '#9d8977');
+
+      // 绘制圆角矩形背景
+      const radius = size * 0.1875; // 24px for 128px, proportional for others
+      ctx.beginPath();
+      ctx.moveTo(radius, 0);
+      ctx.lineTo(size - radius, 0);
+      ctx.quadraticCurveTo(size, 0, size, radius);
+      ctx.lineTo(size, size - radius);
+      ctx.quadraticCurveTo(size, size, size - radius, size);
+      ctx.lineTo(radius, size);
+      ctx.quadraticCurveTo(0, size, 0, size - radius);
+      ctx.lineTo(0, radius);
+      ctx.quadraticCurveTo(0, 0, radius, 0);
+      ctx.closePath();
+
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      // 绘制数字 "3"
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      // 根据大小调整字体
+      const fontSize = size * 0.5625; // 72px for 128px
+      ctx.font = `bold ${fontSize}px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`;
+
+      // 微调位置
+      ctx.fillText('3', size / 2, size / 2 + size * 0.02);
+    }
+
+    // 绘制所有图标
+    ['icon16', 'icon48', 'icon128'].forEach(id => {
+      const canvas = document.getElementById(id);
+      drawIcon(canvas);
+    });
+
+    // 自动下载功能 (可选)
+    function downloadIcon(canvas, filename) {
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // 为每个图标添加点击下载功能
+    document.querySelectorAll('canvas').forEach(canvas => {
+      canvas.style.cursor = 'pointer';
+      canvas.title = '点击下载此图标';
+      canvas.addEventListener('click', () => {
+        const filename = canvas.id + '.png';
+        downloadIcon(canvas, filename);
+      });
+    });
+  </script>
+</body>
+</html>
