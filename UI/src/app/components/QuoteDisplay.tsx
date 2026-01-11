@@ -26,23 +26,24 @@ export function QuoteDisplay() {
       <div className="relative flex items-start gap-5 p-7 bg-white/30 backdrop-blur-2xl rounded-[24px] border border-white/50 shadow-[0_8px_32px_-8px_rgba(197,184,168,0.08)]">
         <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[#c9b8a8]/5 to-transparent rounded-full blur-2xl" />
         <motion.div
-          animate={{ 
+          animate={{
             rotate: [0, 5, -5, 0],
             scale: [1, 1.05, 1]
           }}
-          transition={{ 
+          transition={{
             duration: 5,
             repeat: Infinity,
             ease: "easeInOut"
           }}
+          className="mt-0.5"
         >
           <div className="relative">
             <div className="absolute inset-0 bg-[#c9b8a8]/20 rounded-full blur-md" />
-            <Sparkles className="w-6 h-6 text-[#c9b8a8] flex-shrink-0 mt-0.5 relative z-10" strokeWidth={1.5} />
+            <Sparkles className="w-6 h-6 text-[#c9b8a8] flex-shrink-0 relative z-10" strokeWidth={1.5} />
           </div>
         </motion.div>
-        <motion.p 
-          className="text-[#6b5d54] leading-relaxed relative z-10 font-light text-base"
+        <motion.p
+          className="text-[#6b5d54] leading-relaxed relative z-10 font-light text-base flex-1 -mt-0.5"
           style={{ fontFamily: "'Crimson Text', serif", fontStyle: "italic" }}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

@@ -1,4 +1,4 @@
-import { X, Calendar, Check, Circle } from "lucide-react";
+import { X, Calendar, Check, Download } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Dialog,
@@ -47,26 +47,95 @@ export function HistoryModal({ open, onClose, history }: HistoryModalProps) {
     return Math.round((completed / todos.length) * 100);
   };
 
+  const downloadCSV = () => {
+    // 创建CSV内容
+    const headers = ["日期", "事项", "状态"];
+    const rows: string[][] = [];
+
+    // 按日期排序(最新的在前)
+    const sortedHistory = [...history].sort((a, b) =>
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+
+    sortedHistory.forEach((day) => {
+      day.todos.forEach((todo) => {
+        rows.push([
+          day.date,
+          `"${todo.text.replace(/"/g, '""')}"`, // 转义CSV中的引号
+          todo.completed ? "已完成" : "未完成",
+        ]);
+      });
+    });
+
+    // 组合CSV
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => row.join(",")),
+    ].join("\n");
+
+    // 添加BOM以支持Excel正确显示中文
+    const BOM = "\uFEFF";
+    const blob = new Blob([BOM + csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
+
+    // 创建下载链接
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute(
+      "download",
+      `3things_历史记录_${new Date().toISOString().split("T")[0]}.csv`
+    );
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col bg-gradient-to-br from-white/95 via-[#faf9f8]/95 to-[#f5f3f0]/95 backdrop-blur-3xl border border-white/60 shadow-[0_32px_64px_-12px_rgba(139,122,103,0.2)] rounded-[28px]">
         <DialogHeader className="border-b border-[#e8e4df]/30 pb-4">
-          <DialogTitle className="flex items-center gap-3 text-[#37352f]" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.5rem", fontWeight: 600 }}>
-            <motion.div
-              animate={{ rotate: [0, 3, -3, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              <div className="relative">
-                <div className="absolute inset-0 bg-[#c9b8a8]/20 rounded-lg blur-md" />
-                <Calendar className="w-6 h-6 text-[#c9b8a8] relative z-10" strokeWidth={1.5} />
-              </div>
-            </motion.div>
-            历史记录
+          <DialogTitle className="flex items-center justify-between text-[#37352f]" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.5rem", fontWeight: 600 }}>
+            <div className="flex items-center gap-3">
+              <motion.div
+                animate={{ rotate: [0, 3, -3, 0] }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                <div className="relative">
+                  <div className="absolute inset-0 bg-[#c9b8a8]/20 rounded-lg blur-md" />
+                  <Calendar className="w-6 h-6 text-[#c9b8a8] relative z-10" strokeWidth={1.5} />
+                </div>
+              </motion.div>
+              历史记录
+            </div>
+
+            {history.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button
+                  onClick={downloadCSV}
+                  className="gap-2 bg-gradient-to-br from-[#c9b8a8] via-[#b5a092] to-[#9d8977] hover:from-[#b5a092] hover:to-[#8b7a67] text-white border-0 shadow-[0_4px_16px_-4px_rgba(139,122,103,0.25)] hover:shadow-[0_6px_20px_-4px_rgba(139,122,103,0.35)] transition-all duration-500 rounded-full px-5 py-2 text-sm"
+                  style={{ fontFamily: "'Crimson Text', serif" }}
+                >
+                  <Download className="w-4 h-4" />
+                  导出CSV
+                </Button>
+              </motion.div>
+            )}
           </DialogTitle>
         </DialogHeader>
+
         <div className="overflow-y-auto flex-1 pr-2 py-4">
           {history.length === 0 ? (
-            <motion.div 
+            <motion.div
               className="text-center py-20 text-[#b5b3ad]"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -156,14 +225,18 @@ export function HistoryModal({ open, onClose, history }: HistoryModalProps) {
             </div>
           )}
         </div>
-        <div className="flex justify-end pt-4 border-t border-[#e8e4df]/30">
+
+        <div className="flex justify-between items-center pt-4 border-t border-[#e8e4df]/30">
+          <div className="text-xs text-[#b5b3ad] font-light" style={{ fontFamily: "'Crimson Text', serif" }}>
+            {history.length > 0 && `共 ${history.length} 天记录`}
+          </div>
           <motion.div
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
-            <Button 
-              onClick={onClose} 
-              variant="outline" 
+            <Button
+              onClick={onClose}
+              variant="outline"
               className="border-[#d4cdc3]/40 bg-white/40 backdrop-blur-xl text-[#6b5d54] hover:bg-white/60 hover:border-[#c9b8a8]/40 transition-all duration-500 rounded-full px-6"
               style={{ fontFamily: "'Crimson Text', serif" }}
             >

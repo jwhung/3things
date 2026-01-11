@@ -19,24 +19,41 @@ export function TodoList({ todos, onToggle, onDelete }: TodoListProps) {
   if (todos.length === 0) {
     return (
       <motion.div
-        className="text-center py-20 text-[#b5b3ad]"
+        className="text-center py-16 text-[#b5b3ad]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.1 }}
+          animate={{ scale: 1, opacity: 0.15 }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="mb-4"
+          className="mb-5"
         >
-          <svg className="w-20 h-20 mx-auto" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="w-24 h-24 mx-auto" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="40" cy="40" r="38" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 4" />
             <circle cx="40" cy="40" r="28" stroke="currentColor" strokeWidth="1" opacity="0.5" />
             <circle cx="40" cy="40" r="18" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
           </svg>
         </motion.div>
-        <p className="text-sm font-light tracking-wide" style={{ fontFamily: "'Crimson Text', serif" }}>开始记录今日要事</p>
+        <motion.p
+          className="text-base font-light tracking-wide mb-2"
+          style={{ fontFamily: "'Crimson Text', serif" }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+        >
+          开始记录今日要事
+        </motion.p>
+        <motion.p
+          className="text-sm font-light text-[#c9b8a8]"
+          style={{ fontFamily: "'Crimson Text', serif" }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          每天专注三件重要的事
+        </motion.p>
       </motion.div>
     );
   }
@@ -93,22 +110,22 @@ export function TodoList({ todos, onToggle, onDelete }: TodoListProps) {
                 </motion.div>
               </motion.button>
               <div className="flex-1 min-w-0">
-                <motion.div 
+                <motion.div
                   className="flex items-center gap-2 mb-2"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.15 }}
                 >
                   <div className="h-px w-6 bg-gradient-to-r from-[#c9b8a8]/40 to-transparent" />
-                  <span 
-                    className="text-xs text-[#b5a092] tracking-[0.15em] uppercase font-light"
+                  <span
+                    className="text-[10px] text-[#b5a092] tracking-[0.15em] uppercase font-light"
                     style={{ fontFamily: "'Crimson Text', serif" }}
                   >
                     第 {index + 1} 件事
                   </span>
                 </motion.div>
                 <motion.p
-                  className={`text-[#37352f] leading-relaxed transition-all duration-500 ${
+                  className={`text-[#37352f] leading-relaxed transition-all duration-500 text-base ${
                     todo.completed ? "line-through text-[#b5b3ad]" : ""
                   }`}
                   style={{ fontFamily: "'Crimson Text', serif" }}

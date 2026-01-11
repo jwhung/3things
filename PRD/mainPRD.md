@@ -285,7 +285,7 @@ interface AppData {
 ## 6. 技术栈选择
 
 ### 6.1 前端技术
-- **框架**: 原生 HTML/CSS/JavaScript (不使用框架,保持轻量)
+- **框架**: 原生 HTML/CSS/JavaScript (可调整)
 - **构建工具**: Vite (用于开发和打包)
 - **类型检查**: TypeScript (可选,但推荐)
 - **样式方案**:

@@ -7,9 +7,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Crimson+Text:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 8px;
+      background: transparent;
+    }
+    #root > div {
+      border-radius: 16px;
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <div id="root"></div>
-  <script type="module" src="/src/popup.tsx"></script>
+  <script type="module" src="/src/popup-entry.tsx"></script>
 </body>
 </html>
