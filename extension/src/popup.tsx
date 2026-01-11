@@ -65,7 +65,7 @@ function Popup() {
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <motion.h1
-            className="text-5xl font-light mb-1 relative inline-block"
+            className="text-5xl font-light mb-1.5 relative inline-block"
             style={{ fontFamily: FONTS.CORMORANT_GARAMOND }}
             whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 300 }}
@@ -89,7 +89,7 @@ function Popup() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
-            专注当下
+            日日是好
           </motion.p>
         </motion.div>
 

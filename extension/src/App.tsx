@@ -105,7 +105,7 @@ function App() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
           >
-            专注当下 · 成就未来
+            三事如仪 · 日日是好
           </motion.p>
         </motion.div>
 
@@ -210,7 +210,10 @@ function App() {
         onClose={() => setShowHistory(false)}
         history={history}
         includeToday={true}
-        todayData={todayData}
+        todayData={todos.length > 0 ? {
+          date: new Date().toISOString().split('T')[0],
+          todos: todos
+        } : todayData}
       />
     </div>
   );

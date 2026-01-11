@@ -5,7 +5,6 @@
 import { DayData, Todo } from "../types";
 
 const STORAGE_KEY = "3things-data";
-const MAX_DAYS_TO_KEEP = 30;
 
 /**
  * Load all data from localStorage
@@ -16,12 +15,7 @@ export function loadAllData(): DayData[] {
     if (!saved) return [];
 
     const data: DayData[] = JSON.parse(saved);
-
-    // Filter out old data (older than 30 days)
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - MAX_DAYS_TO_KEEP);
-
-    return data.filter((d) => new Date(d.date) >= thirtyDaysAgo);
+    return data;
   } catch (error) {
     console.error("Failed to load data:", error);
     return [];
@@ -50,14 +44,7 @@ export function saveDayData(date: string, todos: Todo[]): void {
     allData.push({ date, todos });
   }
 
-  // Filter out old data before saving
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - MAX_DAYS_TO_KEEP);
-  const filteredData = allData.filter(
-    (d) => new Date(d.date) >= thirtyDaysAgo
-  );
-
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredData));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
 }
 
 /**
