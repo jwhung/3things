@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
@@ -104,6 +105,9 @@ export function HistoryModal({ open, onClose, history, includeToday = true, toda
             </motion.div>
             历史记录
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            查看过去的任务记录和完成情况
+          </DialogDescription>
         </DialogHeader>
 
         {/* Content */}
