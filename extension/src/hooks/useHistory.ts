@@ -13,19 +13,23 @@ export function useHistory(includeToday: boolean = true) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const allData = loadAllData();
-    const today = getTodayString();
+    const loadData = async () => {
+      const allData = await loadAllData();
+      const today = getTodayString();
 
-    // Separate today's data from historical data
-    const todayEntry = allData.find((d) => d.date === today);
-    const historicalData = allData.filter((d) => d.date !== today && d.todos.length > 0);
+      // Separate today's data from historical data
+      const todayEntry = allData.find((d) => d.date === today);
+      const historicalData = allData.filter((d) => d.date !== today && d.todos.length > 0);
 
-    // Sort historical data by date (newest first)
-    const sortedHistory = sortByDate(historicalData);
+      // Sort historical data by date (newest first)
+      const sortedHistory = sortByDate(historicalData);
 
-    setTodayData(todayEntry || null);
-    setHistory(sortedHistory);
-    setLoading(false);
+      setTodayData(todayEntry || null);
+      setHistory(sortedHistory);
+      setLoading(false);
+    };
+
+    loadData();
   }, [includeToday]);
 
   // Calculate statistics

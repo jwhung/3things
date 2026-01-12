@@ -14,22 +14,30 @@ export function useTodos() {
 
   // Load today's todos on mount
   useEffect(() => {
-    const allData = loadAllData();
-    const today = getTodayString();
-    const todayData = allData.find((d) => d.date === today);
+    const loadData = async () => {
+      const allData = await loadAllData();
+      const today = getTodayString();
+      const todayData = allData.find((d) => d.date === today);
 
-    if (todayData) {
-      setTodos(todayData.todos);
-    }
+      if (todayData) {
+        setTodos(todayData.todos);
+      }
 
-    setLoading(false);
+      setLoading(false);
+    };
+
+    loadData();
   }, []);
 
   // Save todos whenever they change
   useEffect(() => {
     if (!loading) {
-      const today = getTodayString();
-      saveDayData(today, todos);
+      const saveData = async () => {
+        const today = getTodayString();
+        await saveDayData(today, todos);
+      };
+
+      saveData();
     }
   }, [todos, loading]);
 

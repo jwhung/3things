@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last Updated:** January 11, 2026
+**Last Updated:** January 12, 2026
 
 ## Introduction
 
@@ -11,17 +11,24 @@
 ### What Data We Collect
 3things does **NOT** collect, store, or transmit any personal data to external servers.
 
-### Local Storage Only
-All data is stored locally on your device using Chrome's Storage API:
+### Chrome Sync Storage
+All data is stored using Chrome's Sync Storage API (`chrome.storage.sync`):
 - **Task data**: Your daily tasks and completion status
-- **Historical data**: Past tasks for up to 30 days
+- **Historical data**: Past tasks (stored indefinitely)
 - **Settings**: Any user preferences
 
-This data:
-- Remains on your device
-- Is never transmitted to any server
-- Is never shared with third parties
-- Is never used for analytics or advertising
+**Cross-Device Synchronization:**
+Your data is automatically synchronized across all your Chrome devices where you're signed in with the same Google account. This includes:
+- Desktop computers (Windows, Mac, Linux)
+- Chromebooks
+- Mobile devices (Android, iOS)
+
+**Privacy Guarantees:**
+- Data is encrypted by Chrome during transmission
+- Data is stored in your personal Google account storage
+- We (the developers) cannot access your data
+- Data is never shared with third parties
+- Data is never used for analytics or advertising
 
 ## Data Usage
 
@@ -51,21 +58,23 @@ We do **NOT** share your data with any third parties, including:
 The extension requires the following permission:
 
 ### Storage Permission
-- **Purpose**: To save your tasks locally on your device
-- **Data**: Only your task data, stored locally
-- **Access**: Only accessible by this extension on your device
+- **Purpose**: To save your tasks and synchronize them across your Chrome devices
+- **Data**: Only your task data, synced to your Google account
+- **Access**: Only accessible by this extension on your devices where you're signed in
+- **Sync**: Automatic synchronization across all Chrome devices when signed in
 
 ## Data Security
 
 We implement reasonable security measures to protect your data:
-- Data is stored locally using Chrome's secure Storage API
-- No data transmission over networks
-- No cloud storage or remote backups
+- Data is stored using Chrome's secure Sync Storage API
+- Data is encrypted during transmission between devices
+- Data is stored in your personal Google account with Google's security measures
+- No third-party servers or services
 
 However, please note:
-- Anyone with access to your device can view your tasks
-- We recommend backing up important data using our CSV export feature
-- Clearing browser data may delete your tasks
+- Anyone with access to your Google account can view your synced tasks
+- Clearing browser sync data will delete your tasks from all devices
+- We recommend periodically exporting important data (feature coming soon)
 
 ## Third-Party Services
 
@@ -102,4 +111,4 @@ If you have questions about this privacy policy or how we handle your data, plea
 
 ---
 
-**Effective Date**: January 11, 2026
+**Effective Date**: January 12, 2026
