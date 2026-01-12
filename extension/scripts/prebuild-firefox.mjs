@@ -22,9 +22,11 @@ function processManifest() {
   }
 
   // 添加 Firefox 特有配置
+  // Firefox 扩展 ID 格式: name@domain
+  // 首次发布后，这个 ID 就固定了，不要随意修改
   firefoxManifest.browser_specific_settings = {
     gecko: {
-      id: '3things@firefox-addon.astrian.moe',
+      id: '<firefox-id-here>', // 修改为你自己的扩展 ID
       strict_min_version: '115.0',
     },
   };

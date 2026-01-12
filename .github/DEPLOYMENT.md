@@ -26,10 +26,10 @@
 
 | Secret 名称 | 说明 | 获取方式 |
 |------------|------|---------|
-| `CHROME_EXTENSION_ID` | Chrome 扩展 ID | Chrome Web Store 开发者控制台 |
-| `CHROME_CLIENT_ID` | OAuth 客户端 ID | Google Cloud Console |
-| `CHROME_CLIENT_SECRET` | OAuth 客户端密钥 | Google Cloud Console |
-| `CHROME_REFRESH_TOKEN` | OAuth 刷新令牌 | 通过 OAuth 流程获取 |
+| `CHROME_EXTENSION_ID` | Chrome 扩展 ID | Chrome Web Store 开发者控制台 (例如: `abcdefghijklmnopabcdefghijklmnopqrstuvwxyz`) |
+| `CHROME_CLIENT_ID` | OAuth 客户端 ID | Google Cloud Console (例如: `123456789-abcdefg.apps.googleusercontent.com`) |
+| `CHROME_CLIENT_SECRET` | OAuth 客户端密钥 | Google Cloud Console (例如: `GOCSPX-xxxxxxxxxxxx`) |
+| `CHROME_REFRESH_TOKEN` | OAuth 刷新令牌 | 通过 OAuth 流程获取 (例如: `1//0xxxxxxxxxxxx`) |
 
 #### 获取 Chrome Web Store 凭证
 
@@ -43,9 +43,9 @@
    ```bash
    # 使用 chrome-webstore-upload-cli 工具
    npx chrome-webstore-upload-cli \
-     --client-id <CLIENT_ID> \
-     --client-secret <CLIENT_SECRET> \
-     --extension-id <EXTENSION_ID> \
+     --client-id YOUR_CLIENT_ID \
+     --client-secret YOUR_CLIENT_SECRET \
+     --extension-id YOUR_EXTENSION_ID \
      --refresh-token
    ```
    按照提示完成 OAuth 流程后，会获得刷新令牌。
@@ -54,8 +54,8 @@
 
 | Secret 名称 | 说明 | 获取方式 |
 |------------|------|---------|
-| `FIREFOX_API_KEY` | JWT 发行者 | Firefox Add-ons 开发者中心 |
-| `FIREFOX_API_SECRET` | JWT 密钥 | Firefox Add-ons 开发者中心 |
+| `FIREFOX_API_KEY` | JWT 发行者 | Firefox Add-ons 开发者中心 (例如: `user:123456:789`) |
+| `FIREFOX_API_SECRET` | JWT 密钥 | Firefox Add-ons 开发者中心 (例如: `xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`) |
 
 #### 获取 Firefox Add-ons 凭证
 
@@ -132,9 +132,23 @@ tag_name: v${{ github.run_number }}
 2. 确认 API 凭证是否有效
 3. 验证扩展程序在对应商店中是否存在
 
-### Firefox manifest 错误
+### Firefox 扩展 ID 配置
 
-Firefox 不支持所有 Chrome 特定的 manifest 字段，`scripts/patch-manifest-firefox.cjs` 会自动处理这些差异。
+在 `extension/scripts/prebuild-firefox.mjs` 中配置 Firefox 扩展 ID:
+
+```javascript
+firefoxManifest.browser_specific_settings = {
+  gecko: {
+    id: '<firefox-id-here>', // 修改为你的扩展 ID，例如: 'myextension@example.com'
+    strict_min_version: '115.0',
+  },
+};
+```
+
+**注意**:
+- Firefox 扩展 ID 使用电子邮件格式，例如: `myextension@example.com`
+- 首次发布到 Firefox Add-ons 后，这个 ID 就固定了，不要随意修改
+- 开发阶段可以使用临时 ID，发布前确认即可
 
 ## 参考资源
 

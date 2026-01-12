@@ -112,12 +112,14 @@ npm run package:firefox
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "3things@firefox-addon.astrian.moe",
+      "id": "your-extension-id@example.com",
       "strict_min_version": "115.0"
     }
   }
 }
 ```
+
+> **注意**: Firefox 扩展 ID 需要在 `scripts/prebuild-firefox.mjs` 中配置。详见 [`.github/DEPLOYMENT.md`](../.github/DEPLOYMENT.md#firefox-扩展-id-配置)。
 
 ## 安装到浏览器
 
