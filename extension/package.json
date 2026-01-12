@@ -5,9 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/copy-manifest.cjs",
+    "build": "echo 'No platform specified, building for Chrome.' && npm run build:chrome",
+    "build:chrome": "node scripts/prebuild-chrome.mjs && vite build && node scripts/copy-manifest.mjs",
+    "build:firefox": "node scripts/prebuild-firefox.mjs && vite build && node scripts/copy-manifest.mjs",
     "preview": "vite preview",
-    "package": "node scripts/package.cjs"
+    "package": "node scripts/package.mjs",
+    "package:chrome": "node scripts/package-chrome.mjs",
+    "package:firefox": "node scripts/package-firefox.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
