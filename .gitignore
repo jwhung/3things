@@ -53,8 +53,12 @@ extension/STORE_LISTING.md
 extension/SUBMISSION_GUIDE.md
 extension/I18N.md
 extension/ANALYTICS.md
-extension/CLOUDFLARE_SETUP.md
 extension/ANALYTICS_IMPROVEMENTS.md
+extension/CLOUDFLARE_SETUP.md
+extension/ENV_SUMMARY.md
+extension/GA4_SETUP.md
+extension/MIGRATION_TO_GA4.md
+extension/SECURITY_SETUP.md
 
 # Keep public-facing documents:
 # - README.md (project overview)
@@ -64,3 +68,5 @@ extension/ANALYTICS_IMPROVEMENTS.md
 # - extension/INSTALL_GUIDE.md (user installation)
 # - extension/PERMISSION_EXPLANATION.md (permissions)
 # - extension/PRIVACY.md (privacy policy)
+#
+# PRD/ directory can be kept for reference

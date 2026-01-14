@@ -1,9 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "__MSG_appName__",
+  "name": "3things",
   "version": "1.0.1",
-  "description": "__MSG_extensionDescription__",
-  "default_locale": "zh",
+  "description": "每天只需要关注三件最重要的事情",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",

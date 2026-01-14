@@ -6,6 +6,7 @@ import { TodoInput } from "./components/TodoInput";
 import { TodoList } from "./components/TodoList";
 import { QuoteDisplay } from "./components/QuoteDisplay";
 import { HistoryModal } from "./components/HistoryModal";
+import { Fireworks } from "./components/Fireworks";
 import { useTodos } from "./hooks/useTodos";
 import { useHistory } from "./hooks/useHistory";
 import { FONTS } from "./lib/constants";
@@ -242,6 +243,11 @@ function App() {
           todos: todos
         } : todayData}
       />
+
+      {/* 烟花动画 - 完成所有任务时显示 */}
+      <AnimatePresence>
+        {allCompleted && <Fireworks />}
+      </AnimatePresence>
     </div>
   );
 }
