@@ -1,6 +1,6 @@
 {
   "name": "3things-extension",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "3Things Chrome Extension",
   "type": "module",
   "scripts": {

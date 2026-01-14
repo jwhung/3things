@@ -4,7 +4,7 @@
  */
 
 // Version is inlined here to avoid ES6 imports in service worker
-const VERSION = "1.0.0";
+const VERSION = "1.0.1";
 
 // Track extension installation
 chrome.runtime.onInstalled.addListener(async (details) => {
