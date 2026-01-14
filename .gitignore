@@ -32,3 +32,35 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# ================================
+# Documentation Files
+# ================================
+# Internal development documents (root level)
+BUILD_SUCCESS.md
+CHANGELOG.md
+CLAUDE.md
+QUICK_START.md
+TODAY_SUMMARY.md
+TODO.md
+
+# Internal development documents (extension directory)
+extension/ICONS.md
+extension/FINAL_OPTIMIZATIONS.md
+extension/INSTALL.md
+extension/RELEASE_GUIDE.md
+extension/STORE_LISTING.md
+extension/SUBMISSION_GUIDE.md
+extension/I18N.md
+extension/ANALYTICS.md
+extension/CLOUDFLARE_SETUP.md
+extension/ANALYTICS_IMPROVEMENTS.md
+
+# Keep public-facing documents:
+# - README.md (project overview)
+# - SUPPORT.md (technical support)
+# - DISTRIBUTION.md (distribution guide)
+# - extension/README.md (extension development)
+# - extension/INSTALL_GUIDE.md (user installation)
+# - extension/PERMISSION_EXPLANATION.md (permissions)
+# - extension/PRIVACY.md (privacy policy)

@@ -23,6 +23,7 @@ export default defineConfig({
       input: {
         'newtab': resolve(__dirname, 'newtab.html'),
         'popup': resolve(__dirname, 'popup.html'),
+        'background': resolve(__dirname, 'src/background.ts'),
       },
       output: {
         // 使用不同的 chunk 分离策略
@@ -33,6 +34,13 @@ export default defineConfig({
           }
           // 其他代码保持各自独立
           return null;
+        },
+        // 确保 background.js 输出到根目录
+        entryFileNames: (chunkInfo) => {
+          if (chunkInfo.name === 'background') {
+            return 'background.js';
+          }
+          return 'assets/[name]-[hash].js';
         },
       },
     },

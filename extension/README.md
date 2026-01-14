@@ -10,6 +10,23 @@
 npm install
 \`\`\`
 
+### 配置环境变量（可选）
+
+如果要启用 Google Analytics：
+
+1. 复制环境变量模板：
+   \`\`\`bash
+   cp .env.example .env
+   \`\`\`
+
+2. 编辑 `.env` 文件，填入你的 GA4 配置：
+   \`\`\`bash
+   VITE_GA4_MEASUREMENT_ID=G-XXXXXXXXXX
+   VITE_GA4_API_SECRET=YOUR_API_SECRET
+   \`\`\`
+
+   > ⚠️ **重要**: `.env` 文件会被 `.gitignore` 忽略，不会被提交到 Git。详细信息请查看 [SECURITY_SETUP.md](./SECURITY_SETUP.md)
+
 ### 开发模式
 
 \`\`\`bash

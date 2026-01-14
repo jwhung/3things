@@ -1,0 +1,53 @@
+{
+  "appName": {
+    "message": "3things"
+  },
+  "extensionDescription": {
+    "message": "Focus on what matters most - three essential tasks per day"
+  },
+  "tagline": {
+    "message": "Three things · One good day"
+  },
+  "todayProgress": {
+    "message": "Today's Progress"
+  },
+  "allCompleted": {
+    "message": "✨ Three things done, time well spent"
+  },
+  "history": {
+    "message": "History"
+  },
+  "addTask": {
+    "message": "Add today's task..."
+  },
+  "maxTasksReached": {
+    "message": "Maximum 3 tasks per day"
+  },
+  "historyTitle": {
+    "message": "History"
+  },
+  "emptyHistory": {
+    "message": "No history yet"
+  },
+  "today": {
+    "message": "Today"
+  },
+  "close": {
+    "message": "Close"
+  },
+  "add": {
+    "message": "Add"
+  },
+  "download": {
+    "message": "Download"
+  },
+  "historyDescription": {
+    "message": "View past task records and completion status"
+  },
+  "openInNewTab": {
+    "message": "Open in new tab"
+  },
+  "taglinePopup": {
+    "message": "One good day"
+  }
+}

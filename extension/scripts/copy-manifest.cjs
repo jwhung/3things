@@ -32,4 +32,32 @@ if (fs.existsSync(sourceIconsDir)) {
   });
 }
 
-console.log('✅ Manifest and icons copied to dist/');
+// 复制 _locales 文件夹
+const sourceLocalesDir = path.join(__dirname, '../_locales');
+const destLocalesDir = path.join(distDir, '_locales');
+
+if (fs.existsSync(sourceLocalesDir)) {
+  // 递归复制 _locales 文件夹
+  copyDirectory(sourceLocalesDir, destLocalesDir);
+}
+
+function copyDirectory(src, dest) {
+  if (!fs.existsSync(dest)) {
+    fs.mkdirSync(dest, { recursive: true });
+  }
+
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+
+    if (entry.isDirectory()) {
+      copyDirectory(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
+console.log('✅ Manifest, icons, and _locales copied to dist/');

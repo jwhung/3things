@@ -1,9 +1,12 @@
+import { useEffect } from "react";
 import { ExternalLink } from "lucide-react";
 import { motion } from "motion/react";
 import { TodoInput } from "./components/TodoInput";
 import { TodoList } from "./components/TodoList";
 import { FONTS } from "./lib/constants";
 import { useTodos } from "./hooks/useTodos";
+import { t } from "./lib/i18n";
+import { trackPopupOpen } from "./lib/analytics";
 
 function Popup() {
   const {
@@ -16,6 +19,11 @@ function Popup() {
     toggleTodo,
     deleteTodo,
   } = useTodos();
+
+  // Track popup open
+  useEffect(() => {
+    trackPopupOpen().catch(err => console.error('Analytics error:', err));
+  }, []);
 
   const openNewTab = () => {
     chrome.tabs.create({ url: "chrome://newtab" });
@@ -50,7 +58,7 @@ function Popup() {
           className="w-8 h-8 rounded-full bg-white/50 hover:bg-white/70 backdrop-blur-xl border border-[#d4cdc3]/30 text-[#6b5d54] hover:text-[#4a3f37] shadow-[0_4px_16px_-4px_rgba(197,184,168,0.15)] hover:shadow-[0_6px_20px_-4px_rgba(197,184,168,0.25)] transition-all duration-300 flex items-center justify-center"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          title="在新标签页打开"
+          title={t('openInNewTab')}
         >
           <ExternalLink className="w-3.5 h-3.5" strokeWidth={2} />
         </motion.button>
@@ -89,7 +97,7 @@ function Popup() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
-            日日是好
+            {t('taglinePopup')}
           </motion.p>
         </motion.div>
 
@@ -102,7 +110,7 @@ function Popup() {
             transition={{ duration: 0.4 }}
           >
             <div className="flex items-center justify-between text-[10px] text-[#9d8977] mb-1.5 px-0.5">
-              <span className="font-light tracking-wider" style={{ fontFamily: FONTS.CRIMSON_TEXT }}>今日进度</span>
+              <span className="font-light tracking-wider" style={{ fontFamily: FONTS.CRIMSON_TEXT }}>{t('todayProgress')}</span>
               <motion.span
                 className="font-medium tabular-nums"
                 key={completedCount}

@@ -1,6 +1,53 @@
 # 3Things 更新日志
 
-## 最新优化 - 2025-01-08
+## v1.0.0 - 2025-01-14
+
+### ✨ 核心功能升级
+
+1. **跨设备云同步**
+   - 使用 Chrome Storage Sync API 实现自动云同步
+   - 数据在所有登录相同 Google 账号的 Chrome 设备间自动同步
+   - 支持离线使用，数据本地持久化存储
+   - 100KB 同步配额，足够存储长期任务记录
+
+2. **多语言支持 (i18n)**
+   - 支持中文和英文双语
+   - 自动跟随浏览器语言设置
+   - 使用 Chrome Extension 标准 i18n 系统
+   - 完整的开发环境 fallback 机制
+
+### 🔧 技术改进
+
+3. **存储架构重构**
+   - 从 localStorage 迁移到 chrome.storage.sync
+   - 所有存储操作改为异步 (async/await)
+   - 开发环境自动降级到 localStorage
+   - 增强的错误处理和数据验证
+
+4. **国际化实现**
+   - 创建 `_locales/zh/messages.json` 和 `_locales/en/messages.json`
+   - 更新 manifest.json 使用 `__MSG__` 占位符
+   - 创建 `src/lib/i18n.ts` 工具函数
+   - 所有组件迁移到使用 `t()` 翻译函数
+
+### 📝 文档更新
+
+5. **Chrome Web Store 准备**
+   - 创建 `PERMISSION_EXPLANATION.md` - 详细的存储权限说明（中英双语）
+   - 更新 `PRIVACY.md` - 反映云同步功能
+   - 提供商店审核所需的所有权限说明
+
+### 🛠️ 开发体验
+
+6. **代码质量**
+   - 完整的 TypeScript 类型支持
+   - 异步操作的 Promise 封装
+   - 开发环境的中文 fallback
+   - 增强的错误日志
+
+---
+
+## v0.9.0 - 2025-01-08
 
 ### ✨ UI/UX 优化
 
@@ -85,14 +132,17 @@
 - **Tailwind CSS** 4.1.12 (使用 @tailwindcss/vite 插件)
 - **Motion/Framer Motion** 12.23.24
 - **Radix UI** 组件库
-- **localStorage** 数据持久化
+- **Chrome Extension Manifest V3**
+- **chrome.storage.sync** 跨设备云同步
+- **Chrome i18n API** 国际化支持
 
 ---
 
 ## 下一步计划
 
+- [x] 支持多设备同步 (v1.0.0 已实现)
 - [ ] 添加键盘快捷键支持
 - [ ] 支持自定义主题色
 - [ ] 添加数据导出功能
-- [ ] 支持多设备同步
 - [ ] 添加番茄钟计时功能
+- [ ] Chrome Web Store 发布

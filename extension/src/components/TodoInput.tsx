@@ -5,6 +5,7 @@ import { Input } from "./ui/input";
 import { cn } from "./ui/utils";
 import { FONTS } from "../lib/constants";
 import { iconAlignClass, iconAlignStyle, getButtonTextClass } from "../lib/utils";
+import { t } from "../lib/i18n";
 
 interface TodoInputProps {
   onAdd: (text: string) => void;
@@ -65,7 +66,7 @@ export function TodoInput({ onAdd, disabled, remainingCount, compact = false }: 
               onChange={(e) => setText(e.target.value)}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              placeholder={disabled ? "今日三事已满额" : compact ? "记录今日要事..." : "记录今日要事..."}
+              placeholder={disabled ? t('maxTasksReached') : compact ? t('addTask') : t('addTask')}
               disabled={disabled}
               className={inputClassName}
               style={{ fontFamily: FONTS.CRIMSON_TEXT }}
@@ -84,7 +85,7 @@ export function TodoInput({ onAdd, disabled, remainingCount, compact = false }: 
               style={{ fontFamily: FONTS.CRIMSON_TEXT }}
             >
               <Plus className={cn(compact ? "w-4 h-4" : "w-5 h-5", iconAlignClass)} strokeWidth={2.5} style={iconAlignStyle} />
-              {!compact && <span className={getButtonTextClass('md')}>添加</span>}
+              {!compact && <span className={getButtonTextClass('md')}>{t('add')}</span>}
             </button>
           </motion.div>
         </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Todo } from "../types";
 import { loadAllData, saveDayData, getTodayString } from "../lib/storage";
+import { trackTaskAdd, trackTaskComplete, trackTaskDelete } from "../lib/analytics";
 
 const MAX_TODOS_PER_DAY = 3;
 
@@ -53,20 +54,40 @@ export function useTodos() {
       createdAt: Date.now(),
     };
 
+    const taskNumber = todos.length + 1;
     setTodos((prev) => [...prev, newTodo]);
+
+    // Track task addition (fire and forget - don't await)
+    trackTaskAdd(taskNumber).catch(err => console.error('Analytics error:', err));
+
     return true;
   };
 
   const toggleTodo = (id: string) => {
     setTodos((prev) =>
-      prev.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
+      prev.map((todo) => {
+        if (todo.id === id) {
+          const newCompleted = !todo.completed;
+          // Track completion (only when marking as complete)
+          if (newCompleted && !todo.completed) {
+            const taskNumber = prev.findIndex(t => t.id === id) + 1;
+            trackTaskComplete(taskNumber).catch(err => console.error('Analytics error:', err));
+          }
+          return { ...todo, completed: newCompleted };
+        }
+        return todo;
+      })
     );
   };
 
   const deleteTodo = (id: string) => {
-    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+    setTodos((prev) => {
+      const todoToDelete = prev.find((todo) => todo.id === id);
+      if (todoToDelete) {
+        trackTaskDelete().catch(err => console.error('Analytics error:', err));
+      }
+      return prev.filter((todo) => todo.id !== id);
+    });
   };
 
   const completedCount = todos.filter((t) => t.completed).length;

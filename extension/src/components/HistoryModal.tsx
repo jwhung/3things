@@ -11,6 +11,8 @@ import { Button } from "./ui/button";
 import { cn, getButtonTextClass, iconAlignClass, iconAlignStyle } from "../lib/utils";
 import { FONTS } from "../lib/constants";
 import { formatDateToChinese, getCompletionRate } from "../lib/date-utils";
+import { t } from "../lib/i18n";
+import { trackHistoryDownload } from "../lib/analytics";
 
 interface Todo {
   text: string;
@@ -77,6 +79,9 @@ export function HistoryModal({ open, onClose, history, includeToday = true, toda
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+
+    // Track download event
+    trackHistoryDownload().catch(err => console.error('Analytics error:', err));
   };
 
   // Total todos count
@@ -103,10 +108,10 @@ export function HistoryModal({ open, onClose, history, includeToday = true, toda
                 <Calendar className="w-6 h-6 text-[#c9b8a8] relative z-10" strokeWidth={1.5} />
               </div>
             </motion.div>
-            历史记录
+            {t('historyTitle')}
           </DialogTitle>
           <DialogDescription className="sr-only">
-            查看过去的任务记录和完成情况
+            {t('historyDescription')}
           </DialogDescription>
         </DialogHeader>
 
@@ -121,7 +126,7 @@ export function HistoryModal({ open, onClose, history, includeToday = true, toda
             >
               <Calendar className="w-16 h-16 mx-auto mb-4 opacity-10" />
               <p className="font-light" style={{ fontFamily: FONTS.CRIMSON_TEXT }}>
-                暂无历史记录
+                {t('emptyHistory')}
               </p>
             </motion.div>
           ) : (
@@ -178,7 +183,7 @@ export function HistoryModal({ open, onClose, history, includeToday = true, toda
                   style={{ fontFamily: FONTS.CRIMSON_TEXT }}
                 >
                   <Download className={cn("w-4 h-4", iconAlignClass)} strokeWidth={2} style={iconAlignStyle} />
-                  <span className={getButtonTextClass('sm')}>下载</span>
+                  <span className={getButtonTextClass('sm')}>{t('download')}</span>
                 </Button>
               </motion.div>
             )}
@@ -191,7 +196,7 @@ export function HistoryModal({ open, onClose, history, includeToday = true, toda
               className="border-[#d4cdc3]/40 bg-white/40 backdrop-blur-xl text-[#6b5d54] hover:bg-white/60 hover:border-[#c9b8a8]/40 transition-all duration-500 rounded-full px-6 h-9 flex items-center justify-center"
               style={{ fontFamily: FONTS.CRIMSON_TEXT }}
             >
-              <span className={getButtonTextClass('sm')}>关闭</span>
+              <span className={getButtonTextClass('sm')}>{t('close')}</span>
             </Button>
           </motion.div>
         </div>

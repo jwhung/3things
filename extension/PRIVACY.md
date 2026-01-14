@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last Updated:** January 12, 2026
+**Last Updated:** January 14, 2025
 
 ## Introduction
 
@@ -9,7 +9,7 @@
 ## Data Collection
 
 ### What Data We Collect
-3things does **NOT** collect, store, or transmit any personal data to external servers.
+3things does **NOT** collect, store, or transmit personal data to external servers.
 
 ### Chrome Sync Storage
 All data is stored using Chrome's Sync Storage API (`chrome.storage.sync`):
@@ -28,7 +28,32 @@ Your data is automatically synchronized across all your Chrome devices where you
 - Data is stored in your personal Google account storage
 - We (the developers) cannot access your data
 - Data is never shared with third parties
-- Data is never used for analytics or advertising
+
+## Analytics
+
+### Anonymous Usage Statistics
+To improve the extension, we collect **anonymous** usage statistics using Cloudflare Web Analytics:
+
+**What we track:**
+- Daily active users
+- Extension installations and updates
+- Core feature usage (tasks added, completed, deleted)
+- Feature interactions (history views, downloads)
+
+**Privacy guarantees for analytics:**
+- ✅ **No personal data**: No names, emails, or identifiers
+- ✅ **No cookies**: No tracking cookies or local storage for profiling
+- ✅ **Anonymous IDs**: Uses random UUID that stays local to your device
+- ✅ **GDPR compliant**: Privacy-first analytics that respects user privacy
+- ✅ **No cross-site tracking**: Analytics only track this extension
+- ✅ **Opt-out available**: You can disable analytics by uninstalling the extension
+
+**How analytics work:**
+- Uses Cloudflare's privacy-first Web Analytics service
+- Events are sent via virtual pageviews using browser History API
+- Only aggregates and anonymous data are collected
+- No individual user behavior can be traced back to a person
+- Data is used solely for improving user experience and fixing bugs
 
 ## Data Usage
 
@@ -49,9 +74,9 @@ Task data is stored indefinitely on your local device. You can:
 
 We do **NOT** share your data with any third parties, including:
 - No data selling or renting
-- no analytics services
 - No advertising partners
 - No third-party integrations
+- Analytics data is anonymized and aggregated
 
 ## Permissions
 
@@ -78,11 +103,19 @@ However, please note:
 
 ## Third-Party Services
 
-3things does **NOT** use any third-party services:
-- No analytics
-- No advertising
-- No tracking scripts
-- No cloud services
+3things uses the following third-party services:
+
+### Cloudflare Web Analytics (Privacy-First Analytics)
+- **Purpose**: To understand how users interact with the extension
+- **Data**: Anonymous, aggregated usage statistics
+- **Privacy**: GDPR/CCPA compliant, no cookies, no personal data
+- **Website**: https://www.cloudflare.com/web-analytics/
+- **Opt-out**: Uninstall the extension to stop analytics
+
+No other third-party services are used:
+- ✅ No advertising
+- ✅ No tracking scripts
+- ✅ No cloud services for your data
 
 ## User Rights
 
@@ -111,4 +144,4 @@ If you have questions about this privacy policy or how we handle your data, plea
 
 ---
 
-**Effective Date**: January 12, 2026
+**Effective Date**: January 14, 2025

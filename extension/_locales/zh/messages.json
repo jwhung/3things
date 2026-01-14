@@ -1,0 +1,53 @@
+{
+  "appName": {
+    "message": "3things"
+  },
+  "extensionDescription": {
+    "message": "每天只需要关注三件最重要的事情"
+  },
+  "tagline": {
+    "message": "三事如仪 · 日日是好"
+  },
+  "todayProgress": {
+    "message": "今日进度"
+  },
+  "allCompleted": {
+    "message": "✨ 今日三事已成，不负韶华时光"
+  },
+  "history": {
+    "message": "历史记录"
+  },
+  "addTask": {
+    "message": "添加今天的任务..."
+  },
+  "maxTasksReached": {
+    "message": "每天最多只能添加 3 个任务"
+  },
+  "historyTitle": {
+    "message": "历史记录"
+  },
+  "emptyHistory": {
+    "message": "还没有历史记录"
+  },
+  "today": {
+    "message": "今天"
+  },
+  "close": {
+    "message": "关闭"
+  },
+  "add": {
+    "message": "添加"
+  },
+  "download": {
+    "message": "下载"
+  },
+  "historyDescription": {
+    "message": "查看过去的任务记录和完成情况"
+  },
+  "openInNewTab": {
+    "message": "在新标签页打开"
+  },
+  "taglinePopup": {
+    "message": "日日是好"
+  }
+}

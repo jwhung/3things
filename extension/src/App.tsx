@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { History } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Button } from "./components/ui/button";
@@ -10,9 +10,33 @@ import { useTodos } from "./hooks/useTodos";
 import { useHistory } from "./hooks/useHistory";
 import { FONTS } from "./lib/constants";
 import { cn, iconAlignClass, iconAlignStyle, getButtonTextClass } from "./lib/utils";
+import { t } from "./lib/i18n";
+import { trackNewtabOpen, trackHistoryView, initAnalytics } from "./lib/analytics";
+import { VERSION } from "./lib/version";
 
 function App() {
   const [showHistory, setShowHistory] = useState(false);
+
+  // Initialize analytics and track events on mount
+  useEffect(() => {
+    const init = async () => {
+      await initAnalytics(VERSION);
+
+      // Check for pending install/update events from service worker
+      if (typeof chrome !== 'undefined' && chrome.runtime) {
+        chrome.runtime.sendMessage({ action: 'getAnalyticsData' }, async (response) => {
+          if (response?.analytics_install_pending) {
+            await trackNewtabOpen(); // Track as daily active on install
+            chrome.runtime.sendMessage({ action: 'clearAnalyticsData' });
+          }
+        });
+      }
+
+      trackNewtabOpen().catch(err => console.error('Analytics error:', err));
+    };
+
+    init();
+  }, []);
 
   // Use custom hooks for data management
   const {
@@ -64,11 +88,14 @@ function App() {
       >
         <Button
           variant="outline"
-          onClick={() => setShowHistory(true)}
+          onClick={() => {
+            setShowHistory(true);
+            trackHistoryView(history.length > 0 || (todayData && todayData.todos.length > 0)).catch(err => console.error('Analytics error:', err));
+          }}
           className="bg-white/40 backdrop-blur-xl hover:bg-white/60 border-[#d4cdc3]/30 text-[#6b5d54] hover:text-[#4a3f37] shadow-[0_8px_32px_-8px_rgba(197,184,168,0.2)] hover:shadow-[0_12px_40px_-8px_rgba(197,184,168,0.3)] transition-all duration-500 rounded-full px-4 py-2 h-9 flex items-center justify-center gap-2"
         >
           <History className={cn("w-3.5 h-3.5", iconAlignClass)} strokeWidth={2} style={iconAlignStyle} />
-          <span className={getButtonTextClass('sm')}>历史记录</span>
+          <span className={getButtonTextClass('sm')}>{t('history')}</span>
         </Button>
       </motion.div>
 
@@ -105,7 +132,7 @@ function App() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
           >
-            三事如仪 · 日日是好
+            {t('tagline')}
           </motion.p>
         </motion.div>
 
@@ -120,7 +147,7 @@ function App() {
               transition={{ duration: 0.5 }}
             >
               <div className="flex items-center justify-between text-xs text-[#9d8977] mb-2 px-1">
-                <span className="font-light tracking-wider" style={{ fontFamily: "'Crimson Text', serif" }}>今日进度</span>
+                <span className="font-light tracking-wider" style={{ fontFamily: "'Crimson Text', serif" }}>{t('todayProgress')}</span>
                 <motion.span
                   className="font-medium tabular-nums"
                   key={completedCount}
@@ -157,7 +184,7 @@ function App() {
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.2 }}
                     >
-                      ✨ 今日三事已成，不负韶华时光
+                      {t('allCompleted')}
                     </motion.p>
                   </motion.div>
                 )}
