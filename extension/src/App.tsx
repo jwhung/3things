@@ -17,6 +17,8 @@ import { VERSION } from "./lib/version";
 
 function App() {
   const [showHistory, setShowHistory] = useState(false);
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const [titleClickCount, setTitleClickCount] = useState(0);
 
   // Initialize analytics and track events on mount
   useEffect(() => {
@@ -29,6 +31,13 @@ function App() {
           if (response?.analytics_install_pending) {
             await trackNewtabOpen(); // Track as daily active on install
             chrome.runtime.sendMessage({ action: 'clearAnalyticsData' });
+          }
+        });
+
+        // Set first use date if not exists
+        chrome.storage.local.get(['firstUseDate'], (result) => {
+          if (!result.firstUseDate) {
+            chrome.storage.local.set({ firstUseDate: new Date().toISOString() });
           }
         });
       }
@@ -71,6 +80,40 @@ function App() {
 
   const allCompleted = todos.length === maxTodos && completedCount === maxTodos;
 
+  // Calculate days since first use
+  const [daysSinceFirstUse, setDaysSinceFirstUse] = useState(0);
+
+  useEffect(() => {
+    chrome.storage.local.get(['firstUseDate'], (result) => {
+      if (result.firstUseDate) {
+        const firstDate = new Date(result.firstUseDate);
+        const today = new Date();
+        // Reset both dates to midnight for accurate day calculation
+        firstDate.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+        const diffTime = today.getTime() - firstDate.getTime();
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 to include today
+        setDaysSinceFirstUse(diffDays);
+      }
+    });
+  }, []);
+
+  // Handle title click for easter egg
+  const handleTitleClick = () => {
+    const newCount = titleClickCount + 1;
+    setTitleClickCount(newCount);
+
+    if (newCount >= 5) {
+      setShowEasterEgg(true);
+      setTitleClickCount(0);
+
+      // Auto hide after 4 seconds
+      setTimeout(() => {
+        setShowEasterEgg(false);
+      }, 4000);
+    }
+  };
+
   return (
     <div className="h-screen bg-gradient-to-br from-[#faf8f5] via-[#f5f2ed] to-[#ede8e1] relative overflow-hidden">
       {/* 优雅的背景装饰 */}
@@ -109,9 +152,11 @@ function App() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <motion.h1
-            className="text-5xl font-light mb-2 relative inline-block"
+            className="text-5xl font-light mb-2 relative inline-block select-none cursor-pointer"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
             whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleTitleClick}
             transition={{ type: "spring", stiffness: 300 }}
           >
             <span className="relative inline-block">
@@ -127,7 +172,7 @@ function App() {
             </span>
           </motion.h1>
           <motion.p
-            className="text-[#9d8977] text-xs tracking-[0.25em] uppercase font-light mt-4"
+            className="text-[#9d8977] text-xs tracking-[0.25em] uppercase font-light mt-4 select-none"
             style={{ fontFamily: "'Crimson Text', serif" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -135,6 +180,38 @@ function App() {
           >
             {t('tagline')}
           </motion.p>
+
+          {/* Easter Egg Message */}
+          <AnimatePresence>
+            {showEasterEgg && (
+              <motion.div
+                className="mt-6 text-center"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.5 }}
+              >
+                <motion.p
+                  className="text-sm text-[#8b7a67] font-light mb-1"
+                  style={{ fontFamily: "'Crimson Text', serif" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  感谢你使用 3things
+                </motion.p>
+                <motion.p
+                  className="text-xs text-[#9d8977] font-light"
+                  style={{ fontFamily: "'Crimson Text', serif" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  你已坚持使用 {daysSinceFirstUse} 天
+                </motion.p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
 
         {/* 今日进度 */}

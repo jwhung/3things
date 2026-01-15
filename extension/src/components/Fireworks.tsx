@@ -35,16 +35,20 @@ export function Fireworks() {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Elegant confetti colors - soft pastel palette
+    // Morandi color palette - brighter and more vibrant
     const colors = [
-      '#F7B731', // Warm Yellow
-      '#FA8231', // Soft Orange
-      '#EB3B5A', // Gentle Pink
-      '#45AAF2', // Soft Blue
-      '#26DE81', // Mint Green
-      '#A55EEA', // Lavender
-      '#FC5C65', // Coral
-      '#4BCFFA', // Sky Blue
+      '#C9D7E0', // Soft Blue
+      '#DDCFC5', // Warm Pink
+      '#C5DBB5', // Soft Green
+      '#F2E5D0', // Cream
+      '#E5D9CD', // Peach
+      '#F0D5D5', // Rose Pink
+      '#D4E0CC', // Mint
+      '#E8DFD0', // Champagne
+      '#BDD4E0', // Periwinkle
+      '#F5D5C5', // Coral Pink
+      '#C5DED8', // Aqua Mint
+      '#EADDC0', // Soft Yellow
     ];
 
     const createConfetti = () => {

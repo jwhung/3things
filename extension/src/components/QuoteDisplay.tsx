@@ -85,7 +85,7 @@ export function QuoteDisplay() {
           </div>
         </motion.div>
         <motion.p
-          className="text-[#6b5d54] leading-none relative z-10 font-light text-sm flex-1"
+          className="text-[#6b5d54] leading-none relative z-10 font-light text-sm flex-1 select-none"
           style={{ fontFamily: FONTS.CRIMSON_TEXT, fontStyle: "italic" }}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
