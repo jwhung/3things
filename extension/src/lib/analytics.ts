@@ -30,9 +30,77 @@ const GA4_MEASUREMENT_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID || "";
 const GA4_API_SECRET = import.meta.env.VITE_GA4_API_SECRET || "";
 const ENABLE_ANALYTICS = import.meta.env.MODE === 'production';
 
-// Helper: Generate random client ID (similar to UUID)
+// Helper: Generate random client ID in GA4 format: XXXXXXXXXX.XXXXXXXXX (15-20 digits, dot separated)
 function generateClientId(): string {
-  return Date.now().toString() + '-' + Math.random().toString(36).substring(2, 15);
+  // Generate two random numbers, each 9-10 digits
+  const part1 = Math.floor(Math.random() * 10000000000).toString();
+  const part2 = Math.floor(Math.random() * 10000000000).toString();
+  return `${part1}.${part2}`;
+}
+
+// Session management
+const SESSION_KEY = 'analytics_session';
+const SESSION_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+interface Session {
+  id: string;
+  startTime: number;
+  lastActivity: number;
+}
+
+function getSession(): Session {
+  if (typeof chrome !== 'undefined' && chrome.storage) {
+    const stored = localStorage.getItem(SESSION_KEY);
+    if (stored) {
+      try {
+        const session: Session = JSON.parse(stored);
+        const now = Date.now();
+
+        // Check if session is still valid (within 30 minutes)
+        if (now - session.lastActivity < SESSION_DURATION) {
+          session.lastActivity = now;
+          localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+          return session;
+        }
+      } catch (e) {
+        console.error('[Analytics] Failed to parse session:', e);
+      }
+    }
+
+    // Create new session
+    const newSession: Session = {
+      id: Date.now().toString(),
+      startTime: Date.now(),
+      lastActivity: Date.now(),
+    };
+    localStorage.setItem(SESSION_KEY, JSON.stringify(newSession));
+    return newSession;
+  }
+
+  // Fallback for development
+  const stored = localStorage.getItem(SESSION_KEY);
+  if (stored) {
+    try {
+      const session: Session = JSON.parse(stored);
+      const now = Date.now();
+
+      if (now - session.lastActivity < SESSION_DURATION) {
+        session.lastActivity = now;
+        localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+        return session;
+      }
+    } catch (e) {
+      console.error('[Analytics] Failed to parse session:', e);
+    }
+  }
+
+  const newSession: Session = {
+    id: Date.now().toString(),
+    startTime: Date.now(),
+    lastActivity: Date.now(),
+  };
+  localStorage.setItem(SESSION_KEY, JSON.stringify(newSession));
+  return newSession;
 }
 
 // Event type definitions
@@ -63,11 +131,14 @@ async function getAnonymousUserId(): Promise<string> {
       chrome.storage.local.get([STORAGE_KEY], resolve);
     });
 
-    if (result[STORAGE_KEY]) {
-      return result[STORAGE_KEY];
+    const existingId = result[STORAGE_KEY];
+
+    // Validate existing ID format (must be numbers.numbers)
+    if (existingId && /^\d+\.\d+$/.test(existingId)) {
+      return existingId;
     }
 
-    // Generate new anonymous ID
+    // Generate new anonymous ID (either doesn't exist or old format)
     const anonymousId = generateClientId();
     await new Promise<void>((resolve) => {
       chrome.storage.local.set({ [STORAGE_KEY]: anonymousId }, resolve);
@@ -78,10 +149,15 @@ async function getAnonymousUserId(): Promise<string> {
 
   // Fallback for development
   let aid = localStorage.getItem(STORAGE_KEY);
-  if (!aid) {
-    aid = generateClientId();
-    localStorage.setItem(STORAGE_KEY, aid);
+
+  // Validate existing ID format
+  if (aid && /^\d+\.\d+$/.test(aid)) {
+    return aid;
   }
+
+  // Generate new if invalid or doesn't exist
+  aid = generateClientId();
+  localStorage.setItem(STORAGE_KEY, aid);
   return aid;
 }
 
@@ -96,6 +172,7 @@ async function sendEvent(eventName: AnalyticsEvent, props?: EventProps): Promise
 
   try {
     const clientId = await getAnonymousUserId();
+    const session = getSession();
 
     // GA4 Measurement Protocol v2 endpoint
     const endpoint = `https://www.google-analytics.com/mp/collect?measurement_id=${GA4_MEASUREMENT_ID}&api_secret=${GA4_API_SECRET}`;
@@ -103,10 +180,18 @@ async function sendEvent(eventName: AnalyticsEvent, props?: EventProps): Promise
     // Prepare event payload
     const payload = {
       client_id: clientId,
+      user_properties: {
+        session_id: {
+          value: session.id
+        }
+      },
       events: [
         {
           name: eventName,
-          params: props || {}
+          params: {
+            session_id: session.id,
+            ...props
+          }
         }
       ]
     };

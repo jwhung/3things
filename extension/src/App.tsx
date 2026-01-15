@@ -19,6 +19,7 @@ function App() {
   const [showHistory, setShowHistory] = useState(false);
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [titleClickCount, setTitleClickCount] = useState(0);
+  const [justCompleted, setJustCompleted] = useState(false);
 
   // Initialize analytics and track events on mount
   useEffect(() => {
@@ -79,6 +80,25 @@ function App() {
   };
 
   const allCompleted = todos.length === maxTodos && completedCount === maxTodos;
+
+  // Track when user just completed all 3 tasks (for fireworks effect)
+  useEffect(() => {
+    if (allCompleted && !justCompleted) {
+      setJustCompleted(true);
+
+      // Auto hide after 5 seconds
+      setTimeout(() => {
+        setJustCompleted(false);
+      }, 5000);
+    }
+  }, [allCompleted, justCompleted]);
+
+  // Reset justCompleted when user unchecks a task
+  useEffect(() => {
+    if (!allCompleted && justCompleted) {
+      setJustCompleted(false);
+    }
+  }, [allCompleted, justCompleted]);
 
   // Calculate days since first use
   const [daysSinceFirstUse, setDaysSinceFirstUse] = useState(0);
@@ -247,7 +267,7 @@ function App() {
                 />
               </div>
               <AnimatePresence>
-                {allCompleted && (
+                {justCompleted && (
                   <motion.div
                     className="mt-4 p-4 bg-white/40 backdrop-blur-xl border border-[#d4cdc3]/20 rounded-2xl text-center shadow-[0_8px_32px_-8px_rgba(197,184,168,0.15)]"
                     initial={{ opacity: 0, scale: 0.95, y: -10 }}
@@ -321,9 +341,9 @@ function App() {
         } : todayData}
       />
 
-      {/* 烟花动画 - 完成所有任务时显示 */}
+      {/* 烟花动画 - 刚完成所有任务时显示 */}
       <AnimatePresence>
-        {allCompleted && <Fireworks />}
+        {justCompleted && <Fireworks />}
       </AnimatePresence>
     </div>
   );
