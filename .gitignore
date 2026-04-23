@@ -10,7 +10,6 @@ build/
 *.pem
 *.crx
 
-
 # Logs
 *.log
 npm-debug.log*
@@ -70,3 +69,6 @@ extension/SECURITY_SETUP.md
 # - extension/PRIVACY.md (privacy policy)
 #
 # PRD/ directory can be kept for reference
+
+# Artifacts
+*.zip
